@@ -29,7 +29,8 @@ class TxService {
         $startTime = $this->dateService->getTimestamp($startTime);
 
         $parameters = '?address=' . $_ENV['BNB_ADRESS'] . '&txType=TRANSFER' . '&limit=' . '&txAsset=BNB' . '&startTime=' . $startTime . '&endTime' . $endTime;
-        $request = 'https://dex.binance.org/api/v1/transactions' . $parameters;
+        //$request = 'https://dex.binance.org/api/v1/transactions' . $parameters;
+        $request = 'https://testnet-dex.binance.org/api/v1/transactions' . $parameters;
 
         $response = $client->request('GET', $request);
         $response = $response->toArray();

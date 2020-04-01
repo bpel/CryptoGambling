@@ -37,12 +37,12 @@ class Tx
     private $timestamp;
 
     /**
-     * @ORM\Column(type="string", length=42)
+     * @ORM\Column(type="string", length=43)
      */
     private $fromAddr;
 
     /**
-     * @ORM\Column(type="string", length=42)
+     * @ORM\Column(type="string", length=43)
      */
     private $toAddr;
 
