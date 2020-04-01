@@ -6,7 +6,7 @@ use App\Service\TxService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class TransactionsController extends AbstractController
+class TransactionController extends AbstractController
 {
     /**
      * @Route("/txs/check", name="check_txs")
