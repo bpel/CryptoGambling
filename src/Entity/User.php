@@ -31,6 +31,16 @@ class User
      */
     private $bnb_balance;
 
+    /**
+     * @ORM\Column(type="string", length=9)
+     */
+    private $user_memo;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $register_date;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -68,6 +78,30 @@ class User
     public function setBnbBalance(float $bnb_balance): self
     {
         $this->bnb_balance = $bnb_balance;
+
+        return $this;
+    }
+
+    public function getUserMemo(): ?string
+    {
+        return $this->user_memo;
+    }
+
+    public function setUserMemo(string $user_memo): self
+    {
+        $this->user_memo = $user_memo;
+
+        return $this;
+    }
+
+    public function getRegisterDate(): ?\DateTimeInterface
+    {
+        return $this->register_date;
+    }
+
+    public function setRegisterDate(\DateTimeInterface $register_date): self
+    {
+        $this->register_date = $register_date;
 
         return $this;
     }
