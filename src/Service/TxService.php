@@ -63,20 +63,40 @@ class TxService {
 
     public function saveTx(array $tx): void {
         $txSave = new Tx();
-        $txSave->setTxHash($tx['txHash']);
-        $txSave->setBlockHeight($tx['blockHeight']);
-        $txSave->setTxType($this->getTxType($tx['toAddr']));
-        $txSave->setTimestamp($this->getDatetime($tx['timeStamp']));
-        $txSave->setFromAddr($tx['fromAddr']);
-        $txSave->setToAddr($tx['toAddr']);
-        $txSave->setValue($tx['value']);
-        $txSave->setTxFee($tx['txFee']);
-        $txSave->setTxAsset($tx['txAsset']);
-        $txSave->setTxAge($tx['txAge']);
-        $txSave->setMemo($tx['memo']);
+        $txSave
+            ->setTxHash($tx['txHash'])
+            ->setBlockHeight($tx['blockHeight'])
+            ->setTxType($this->getTxType($tx['toAddr']))
+            ->setTimestamp($this->getDatetime($tx['timeStamp']))
+            ->setFromAddr($tx['fromAddr'])
+            ->setToAddr($tx['toAddr'])
+            ->setValue($tx['value'])
+            ->setTxFee($tx['txFee'])
+            ->setTxAsset($tx['txAsset'])
+            ->setTxAge($tx['txAge'])
+            ->setMemo($tx['memo']);
 
         $this->em->persist($txSave);
         $this->em->flush();
+    }
+
+    public function checkTx()
+    {
+        $txs = $this->getNewTxs();
+        if (empty($txs)) {
+            return false;
+            // message dans la console à la place
+            //return $this->json(['message' => 'no new tx']);
+        }
+
+        foreach ($txs as $tx) {
+            $this->saveTx($tx);
+        }
+
+        return true;
+        // message dans la console à la place
+        //$nbTxSaved = count($txs);
+        //return $this->json(['message' => 'tx saved', 'count' => $nbTxSaved]);
     }
 
 }

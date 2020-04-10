@@ -2,12 +2,16 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User
+class User implements UserInterface, EncoderAwareInterface
 {
     /**
      * @ORM\Id()
@@ -27,12 +31,12 @@ class User
     private $password;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", nullable=true)
      */
     private $bnb_balance;
 
     /**
-     * @ORM\Column(type="string", length=9)
+     * @ORM\Column(type="string", length=9, nullable=true)
      */
     private $user_memo;
 
@@ -40,6 +44,16 @@ class User
      * @ORM\Column(type="datetime")
      */
     private $register_date;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Withdrawal", mappedBy="iduser")
+     */
+    private $withdrawals;
+
+    public function __construct()
+    {
+        $this->withdrawals = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -102,6 +116,77 @@ class User
     public function setRegisterDate(\DateTimeInterface $register_date): self
     {
         $this->register_date = $register_date;
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getEncoderName()
+    {
+		return null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getRoles()
+    {
+        // TODO: Implement getRoles() method.
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getUsername()
+    {
+        // TODO: Implement getUsername() method.
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
+
+    /**
+     * @return Collection|Withdrawal[]
+     */
+    public function getWithdrawals(): Collection
+    {
+        return $this->withdrawals;
+    }
+
+    public function addWithdrawal(Withdrawal $withdrawal): self
+    {
+        if (!$this->withdrawals->contains($withdrawal)) {
+            $this->withdrawals[] = $withdrawal;
+            $withdrawal->setIduser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWithdrawal(Withdrawal $withdrawal): self
+    {
+        if ($this->withdrawals->contains($withdrawal)) {
+            $this->withdrawals->removeElement($withdrawal);
+            // set the owning side to null (unless already changed)
+            if ($withdrawal->getIduser() === $this) {
+                $withdrawal->setIduser(null);
+            }
+        }
 
         return $this;
     }

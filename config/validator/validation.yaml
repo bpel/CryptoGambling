@@ -1,3 +1,7 @@
 App\Entity\Tx:
   constraints:
     - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: txHash
+App\Entity\Withdrawal:
+  properties:
+    toAddr:
+      - NotBlank: ~
